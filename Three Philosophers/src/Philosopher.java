@@ -1,4 +1,4 @@
-public class Philosopher {
+public class Philosopher implements Runnable{
     private int id;
     private Chopstick left;
     private Chopstick right;
@@ -7,5 +7,10 @@ public class Philosopher {
         this.id = id;
         this.left = l;
         this.right = r;
+    }
+
+    public void run(){
+        System.out.printf("Philosopher %d is hungry", this.id);
+
     }
 }
