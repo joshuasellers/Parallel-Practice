@@ -7,6 +7,10 @@ public class Chopstick {
         this.held = false;
     }
 
+    public boolean getHeld(){
+        return this.held;
+    }
+
     public synchronized boolean pickUp(int p){
         if (this.held){
             System.out.printf("Chopstick %d is already held, sorry philosopher %d \n",this.id, p);
@@ -21,7 +25,7 @@ public class Chopstick {
 
     public synchronized void putDown(int p){
         if (!this.held){
-            System.out.printf("Chopstick %d is already on the tabl, sorry philosopher %d \n",this.id,p);
+            System.out.printf("Chopstick %d is already on the table, sorry philosopher %d \n",this.id,p);
         }
         else {
             System.out.printf("Philosopher %d put down chopstick %d\n", p, this.id);
