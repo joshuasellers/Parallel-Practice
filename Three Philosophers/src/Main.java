@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -26,9 +28,23 @@ public class Main {
             Chopstick right = chopsticks.get(r);
             philosophers.add(new Philosopher(i,left,right));
         }
+        Map<Integer, Thread> eaters = new HashMap<>();
         while(true){
             int r = ThreadLocalRandom.current().nextInt(0,len);
-            new Thread(philosophers.get(r)).start();
+            if (!eaters.containsKey(r)) {
+                System.out.printf("Philosopher %d is hungry\n", philosophers.get(r).getId());
+                Thread t = new Thread(philosophers.get(r));
+                t.start();
+                eaters.put(r,t);
+            }
+            else{
+                if (!eaters.get(r).isAlive()){
+                    System.out.printf("Philosopher %d is hungry\n", philosophers.get(r).getId());
+                    Thread t = new Thread(philosophers.get(r));
+                    t.start();
+                    eaters.put(r,t);
+                }
+            }
         }
 
     }

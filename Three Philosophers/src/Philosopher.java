@@ -11,8 +11,11 @@ public class Philosopher implements Runnable{
         this.right = r;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void run(){
-        System.out.printf("Philosopher %d is hungry\n", this.id);
         try {
             /*
             // Original way - creates deadlock
@@ -27,16 +30,15 @@ public class Philosopher implements Runnable{
                 Thread.sleep(r);
             }
             */
-            // New way - fixes deadlock
-            while (this.left.getHeld() || this.right.getHeld()) {
-                int r = ThreadLocalRandom.current().nextInt(0,500);
+            // New way - fixes deadlock!
+            while (!pickUpChopsticks()){
                 System.out.printf("Philosopher %d is waiting for chopsticks\n", this.id);
+                int r = ThreadLocalRandom.current().nextInt(0,500);
                 Thread.sleep(r);
             }
-            this.left.pickUp(this.id);
-            this.right.pickUp(this.id);
             System.out.printf("Philosopher %d is eating\n", this.id);
-            Thread.sleep(500);
+            int r = ThreadLocalRandom.current().nextInt(0,500);
+            Thread.sleep(r);
             System.out.printf("Philosopher %d is done eating\n", this.id);
             this.right.putDown(this.id);
             this.left.putDown(this.id);
@@ -45,5 +47,18 @@ public class Philosopher implements Runnable{
             System.out.println("Interrupted");
         }
 
+    }
+
+    private boolean pickUpChopsticks(){
+        if (this.left.pickUp(this.id)){
+            if (this.right.pickUp(this.id)){
+                return true;
+            }
+            else {
+                this.left.putDown(this.id);
+                return false;
+            }
+        }
+        else return false;
     }
 }

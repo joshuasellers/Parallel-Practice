@@ -7,7 +7,7 @@ public class Chopstick {
         this.held = false;
     }
 
-    public boolean getHeld(){
+    public synchronized boolean getHeld(){
         return this.held;
     }
 
